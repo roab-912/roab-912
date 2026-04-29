@@ -1,6 +1,6 @@
 # Hi, I'm Rémi
 
-**Cybersecurity Engineer · PhD Candidate in Blockchain Systems**  
+**Cybersecurity Engineer · PhD student in Blockchain Systems**  
 *Zero-Knowledge Proofs · Distributed Systems · Performance Modeling*
 
 ---
