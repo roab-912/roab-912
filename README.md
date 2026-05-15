@@ -1,146 +1,136 @@
 # Hi, I'm Rémi
 
-**Cybersecurity Engineer · PhD student in Blockchain Systems**  
-*Zero-Knowledge Proofs · Distributed Systems · Performance Modeling*
+**Blockchain / L2 Engineer · Applied Zero-Knowledge**
+*CIFRE PhD candidate — IMT Atlantique × Vistory*
+
+I build distributed systems that scale, and I use cryptography — primarily zero-knowledge proofs — as the lever that lets them scale without giving up correctness. My core focus is **throughput, latency, and verifiable integrity** in blockchain infrastructure: where the bottlenecks actually are, how to model them, and how to engineer around them.
 
 ---
 
-## 🧠 Positioning
+## What I do
 
-I design systems where **trust is replaced by cryptographic and systemic guarantees**.
+- **L2 scaling architectures** — zk-rollups, optimistic rollups, state channels, sidechains
+- **Zero-knowledge engineering** — Groth16 circuits in Circom, applied cryptography (Poseidon, KZG, EIP-4844), prover/verifier pipelines
+- **Performance modeling** — analytical and empirical study of consensus protocols, prover backends, and data-availability layers
+- **Trustless infrastructure** — anchoring, integrity proofs, Merkle aggregation, on-chain settlement contracts
 
-My work lies at the intersection of:
-- **formal modeling** (what are the limits?)
-- **protocol design** (how do we approach them?)
-- **implementation** (what actually works in practice?)
-
-> Bridging theoretical limits and real-world systems.
+I work end-to-end: from the formal model down to the Solidity verifier deployed on testnet.
 
 ---
 
-## 🔬 Research
+## Selected work
 
-PhD candidate at IMT Atlantique, working on the **performance boundaries of blockchain systems**.
+### ⚡ ZK-Rollup for Monetary Transactions — *L2 scaling, end-to-end*
+Reference implementation accompanying my CIFRE doctoral thesis. A full zk-rollup compressing batches of up to **8192 transactions** into a single Groth16 proof, with EIP-4844 blobs as the data-availability layer, deployed on **Ethereum Sepolia**.
 
-### Core research directions
+- Circom circuits (per-batch-size R1CS) + Groth16 verifier contracts on Sepolia
+- Sequencer / Executor / Prover / DA / L1 client — all subsystems isolated and instrumented
+- Dual prover backend: `snarkjs` (reference) and `rapidsnark` (production)
+- EIP-4844 type-3 transactions binding the validity proof to the blob commitment
+- Empirical benchmarks: **~1750 tx/s** prover throughput at N=8192 with `rapidsnark`, **O(1) on-chain verification** independent of batch size
 
-- Formal modeling of **maximum throughput and latency limits**
-- Analytical study of **consensus mechanisms and network effects**
-- Layer 2 scalability:
-  - Zero-Knowledge Rollups  
-  - Optimistic Rollups  
-  - State Channels  
-  - Sidechains  
-- Trade-offs between:
-  - **Scalability**
-  - **Security**
-  - **Decentralization**
-
-The goal is to build **predictive frameworks** for designing next-generation blockchain architectures.
+> **Key result:** the system is bandwidth-bound, not proof-bound. Verification gas is amortised per-transaction as 1/N — this is the mechanism through which proof succinctness translates into throughput scaling.
 
 ---
 
-## 🚀 Selected Work
+### 🔗 Recursive SNARK Benchmark — *From O(N) to O(1) verification*
+Empirical demonstration that replacing N independent Groth16 proofs of an iterated computation with a **single proof compressing the whole chain** collapses verification cost from `O(N)` to `O(1)`.
 
-### 🔐 Data Integrity Platform — *Trustless anchoring system*
+- MiMC recurrence over BN254, parameterised chain circuit (1 → 100 transitions)
+- Side-by-side measurement of verifier time, proof size, and prover cost
+- Documents the standard rollup trade-off: heavy off-chain proving, cheap on-chain verification
 
-🔗 [coming]
-
-A production-oriented architecture for **verifiable data integrity using blockchain anchoring**.
-
-- Merkle tree aggregation + L2/L1 anchoring
-- Cryptographic proofs independently verifiable
-- Multi-layer anchoring strategy (cost vs security trade-off)
-- On-premise architecture (API + anchoring service + PostgreSQL + smart contracts)
-
-**Key insight:**  
-Decoupling data availability from **verifiable integrity guarantees**.
+> Built as a teaching artefact for the proof-aggregation argument that underpins every modern rollup design.
 
 ---
 
-### ⚙️ Blockchain Consensus Simulator — *Performance modeling*
+### 🔐 Data Integrity Platform — *Production trustless anchoring* (ROAB)
+On-premise platform for verifiable data integrity through blockchain anchoring. Built as a multi-service architecture deployed in containers.
 
-🔗 [here](https://github.com/roab-912/Custom-Blockchain-Consensus-Simulator)
+- REST API ingestion → Merkle aggregation → dual-layer anchoring (**L2 + L1**)
+- Solidity smart contract (`DataIntegrityAnchor`) for timestamped Merkle root storage
+- Three independently-verifiable proof types: L2 anchor, L1 anchor, single-entry proof
+- TypeScript microservices (API + anchoring worker) + PostgreSQL + Docker Compose
 
-A scientific simulator comparing **PoW, PoS, and PoA** under realistic constraints.
-
-- Models:
-  - difficulty adjustment (PoW)
-  - BFT overhead (PoS)
-  - authority-based consensus (PoA)
-- Metrics:
-  - throughput (TPS)
-  - finality latency
-  - energy per transaction
-  - security score
-- Large-scale simulations (10² → 10⁴ nodes)
-
-**Key insight:**  
-Consensus performance is governed by **structural constraints**, not implementation details.
+> **Key insight:** decoupling data availability from verifiable integrity — and using the L2/L1 split to trade settlement cost against finality guarantees.
 
 ---
 
-### 🧩 Zero-Knowledge Identity System — *Applied cryptography*
+### 🧪 Blockchain Consensus Simulator — *Performance modeling at scale*
+Scientific simulator comparing **PoW, PoS, PoA** across 10² → 10⁴ nodes, with physically-grounded models (automatic difficulty adjustment, BFT communication overhead, propagation delay, orphan rate).
 
-🔗 [here](https://github.com/roab-912/Zero-Knowledge-Identity-System)
+- Four metrics: throughput, finality latency, energy per transaction, security score
+- Interactive parameter sweeps (PySide6 + Matplotlib)
+- Quantified result: PoW energy/tx grows **×102 over the range**, security plateaus at validator caps — predictive framework for protocol design
 
-A minimal but rigorous implementation of **identity verification using ZK proofs (Groth16)**.
-
-- Circom circuit with Poseidon hash commitment
-- Proof generation via snarkjs
-- Strong guarantees:
-  - completeness
-  - soundness
-  - zero-knowledge
-- End-to-end pipeline (prover / verifier / CLI)
-
-**Key insight:**  
-Authentication can be reduced to **proof of knowledge**, eliminating secret exposure entirely.
+> Used to characterise the structural — not implementation-level — limits of each consensus family.
 
 ---
 
-## 🧪 Research → Systems Approach
+### 🛡️ Zero-Knowledge Identity System — *Applied Groth16 pipeline*
+Minimal but rigorous end-to-end ZK identity scheme: prove knowledge of a secret linked to a registered commitment, without revealing it.
 
-Across all projects, a common methodology emerges:
-
-1. **Model the system** (mathematically or structurally)  
-2. **Identify fundamental limits** (throughput, latency, security)  
-3. **Design around constraints**  
-4. **Implement minimal but rigorous prototypes**
-
-This allows moving from:
-- abstract theory → measurable systems  
-- assumptions → guarantees  
+- Poseidon-based commitment scheme, Circom circuit, snarkjs Groth16 backend
+- Full pipeline: register → prove → verify, with explicit notes on nullifier reuse, trusted setup, and replay
+- Built as a clean reference for the soundness / zero-knowledge / completeness triad
 
 ---
 
-## 🌉 What I Bring
+### 🎮 Veilcrypt — *ZK fog-of-war for trustless games* *(work in progress)*
+Asynchronous multiplayer dungeon crawler with cryptographic fog of war, in the lineage of Dark Forest.
 
-I work on problems where **correctness and guarantees matter more than convenience**.
-
-- Design of **trustless architectures**
-- Integration of **Zero-Knowledge proofs in real systems**
-- Performance analysis of **blockchain and distributed protocols**
-- Translation of **research insights into production constraints**
+- Noir circuits + Solidity verifier (Foundry), TypeScript/React/Phaser client
+- Deterministic world generation: the dungeon exists only as `tile(seed, x, y, depth) → content`
+- Four action circuits: scout, move, fight, descend
+- Demonstrates that ZK can power real, playable applications — not just financial primitives
 
 ---
 
-## 🤝 Collaboration
+### 🔍 Smart Contract Vulnerability Analyzer — *Static analysis prototype*
+Pedagogical Solidity static analyser covering the ten canonical vulnerability classes (reentrancy, overflow, access control, `tx.origin`, `delegatecall`, weak randomness, DoS, …).
 
-Interested in working on:
+- Pattern-based heuristic detectors, one per vulnerability class
+- Paired vulnerable / safe example corpus for each class
+- CLI with JSON output for integration
 
-- Blockchain infrastructure (L1 / L2)
-- Zero-Knowledge systems
-- High-performance distributed systems
+---
 
-Particularly relevant for teams needing:
+## Methodology
 
-- **rigorous understanding of scalability limits**
-- **provable data integrity mechanisms**
-- **cryptographic guarantees in production systems**
+Across every project, the same loop:
+
+1. **Model** the system formally — what does the math say is achievable?
+2. **Identify the binding constraint** — throughput? verification cost? data availability? prover memory?
+3. **Engineer around it** — circuit design, batching, aggregation, layer choice
+4. **Measure** — empirical benchmarks, not assumptions
+
+This is how research insights become production constraints — and how production observations feed back into the model.
+
+---
+
+## Stack
+
+**ZK / Cryptography** — Circom, snarkjs, rapidsnark, Noir, Groth16, Poseidon, KZG, EIP-4844
+**Smart contracts** — Solidity, Foundry, EVM (Cancun)
+**Backend / Infra** — Python, TypeScript, Node.js, Docker, PostgreSQL, FastAPI
+**Frontend** — React, Phaser
+**Analysis** — NumPy, Matplotlib, performance benchmarking
+
+---
+
+## Collaboration
+
+I'm particularly interested in problems involving:
+
+- L2 / rollup infrastructure (zk or optimistic)
+- Production deployment of ZK proof systems
+- Scalability and performance engineering for distributed protocols
+- Trustless data integrity and verifiable computation
+
+Open to **full-time positions and freelance missions** in these areas.
 
 ---
 
 ## 📫 Contact
 
-- 💼 LinkedIn: https://www.linkedin.com/in/r%C3%A9mi-barbier-2a713b179/
+- **LinkedIn:** [Rémi Barbier](https://www.linkedin.com/in/r%C3%A9mi-barbier-2a713b179/)
