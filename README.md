@@ -1,3 +1,4 @@
+🇬🇧 English | [🇫🇷 Français](README-fr.md)
 # Hi, I'm Rémi
 
 **Blockchain / L2 Engineer · Software Security Engineer · Applied Zero-Knowledge**
