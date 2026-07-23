@@ -93,16 +93,6 @@ Analyseur statique couvrant les dix classes canoniques de vulnérabilités Solid
 
 ---
 
-### 🎮 Veilcrypt — *Fog-of-war ZK pour jeux trustless* *(en cours de développement)*
-Dungeon crawler multijoueur asynchrone avec brouillard de guerre cryptographique, dans la lignée de Dark Forest.
-
-- Circuits Noir + verifier Solidity (Foundry), client TypeScript/React/Phaser
-- Génération de monde déterministe : le donjon n'existe que sous la forme `tile(seed, x, y, depth) → content`
-- Quatre circuits d'actions : scout, move, fight, descend
-- Démontre que la ZK peut alimenter des applications réelles et jouables — pas uniquement des primitives financières
-
----
-
 ## Méthodologie
 
 Sur chaque projet, la même boucle :
