@@ -93,16 +93,6 @@ Static analyser covering the ten canonical Solidity vulnerability classes (reent
 
 ---
 
-### 🎮 Veilcrypt — *ZK fog-of-war for trustless games* *(work in progress)*
-Asynchronous multiplayer dungeon crawler with cryptographic fog of war, in the lineage of Dark Forest.
-
-- Noir circuits + Solidity verifier (Foundry), TypeScript/React/Phaser client
-- Deterministic world generation: the dungeon exists only as `tile(seed, x, y, depth) → content`
-- Four action circuits: scout, move, fight, descend
-- Demonstrates that ZK can power real, playable applications — not just financial primitives
-
----
-
 ## Methodology
 
 Across every project, the same loop:
