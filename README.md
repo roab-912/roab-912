@@ -309,7 +309,3 @@ This work provides a basis for research discussions and engagements involving **
 For research supervisors, the repositories expose models, experimental choices and limitations. For clients, they show my ability to connect a requirement to concrete components: circuits, APIs, storage, interfaces, tests and documentation.
 
 **Contact:** [LinkedIn — Rémi Barbier](https://www.linkedin.com/in/r%C3%A9mi-barbier-2a713b179/).
-
----
-
-<sub>Portfolio fondé sur les dépôts publics consultés le 9 novembre 2026. Les validations citées sont celles documentées dans les dépôts ; elles ne constituent pas une certification indépendante. Les conditions de réutilisation sont propres à chaque dépôt. / Portfolio based on public repositories reviewed on 9 November 2026. Referenced validations are those documented in the repositories and do not constitute independent certification. Reuse terms are repository-specific.</sub>
